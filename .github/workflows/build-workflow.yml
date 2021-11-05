@@ -36,6 +36,7 @@ jobs:
               run: | 
                 docker-compose up -d
                 docker ps -a
+                uname -a
                 docker logs rabbitmq_container
 
             # - name: Run unit test suite
