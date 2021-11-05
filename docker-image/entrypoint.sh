@@ -1,5 +1,3 @@
-# Reference : https://github.com/docker-library/rabbitmq/blob/master/3.8/ubuntu/docker-entrypoint.sh
-
 #!/usr/bin/env bash
 set -eu
 
@@ -411,6 +409,7 @@ fi
 combinedSsl='/tmp/rabbitmq-ssl/combined.pem'
 
 # Create a tmp directory
+
 mkdir -p /tmp/rabbitmq-ssl
 
 if [ "$haveSslConfig" ] && [[ "$1" == rabbitmq* ]] && [ ! -f "$combinedSsl" ]; then
