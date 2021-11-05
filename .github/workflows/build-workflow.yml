@@ -7,7 +7,6 @@ on:
       branches: [ rabbitmq-3.8.2-ubuntu-20.04 ]
 
 env:
-    REGISTRY: hub.docker.com
     DOCKER_HUB_REPO: "orangehrm/orangehrm-rabbitmq"
     TAG_NAME: "rabbitmq-3.8.2-ubuntu-20.04"
     UPSTREAM_REPO: "orangehrm/orangehrm-rabbitmq-images"
