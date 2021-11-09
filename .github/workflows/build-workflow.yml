@@ -2,15 +2,15 @@ name: Image Build Workflow
 
 on:
     push:
-      branches: [ rabbitmq-3.9-redhat-8 ]   
+      branches: [ rabbitmq-3.9.8-redhat-8.4 ]   
     pull_request:
-      branches: [ rabbitmq-3.9-redhat-8 ]
+      branches: [ rabbitmq-3.9.8-redhat-8.4 ]
 
 env:
     DOCKER_HUB_REPO: "orangehrm/orangehrm-rabbitmq"
-    TAG_NAME: "rabbitmq-3.9-redhat-8"
+    DEFAULT_TAG_NAME: "rabbitmq-3.9.8-redhat-8.4"
     UPSTREAM_REPO: "orangehrm/orangehrm-rabbitmq-images"
-    UPSTREAM_BRANCH: "refs/heads/rabbitmq-3.9-redhat-8"
+    UPSTREAM_BRANCH: "refs/heads/rabbitmq-3.9.8-redhat-8.4"
 
 jobs:
     Build:
@@ -29,7 +29,7 @@ jobs:
               run: composer install
                           
             - name: Build docker image
-              run: docker build -t ${{ env.DOCKER_HUB_REPO }}:${{ env.TAG_NAME }} docker-image
+              run: docker build -t ${{ env.DOCKER_HUB_REPO }}:${{ env.DEFAULT_TAG_NAME }} docker-image
 
             - name: Spin up a container
               run: | 
@@ -40,15 +40,23 @@ jobs:
               run: |
                 sleep 10s
                 php vendor/bin/codecept run unit
-              
+                
+            - name: Get installed rabbitmq version
+              run: echo "VERSION_TAG_NAME=$(docker exec rabbitmq_container rabbitmqctl --version)" >> $GITHUB_ENV
+  
+            - name: New image with a version tag
+              run: docker tag ${{ env.DOCKER_HUB_REPO }}:${{ env.DEFAULT_TAG_NAME }} ${{ env.DOCKER_HUB_REPO }}:mariadb-${{ env.VERSION_TAG_NAME }} 
+                
             - name: Docker hub login
               if: ${{ github.repository == env.UPSTREAM_REPO && github.ref == env.UPSTREAM_BRANCH }}
               run: docker login -u=${{ secrets.DOCKER_HUB_USERNAME }} -p=${{ secrets.DOCKER_HUB_PASSWORD }}
 
             - name: Deploy changes to the docker hub
               if: ${{ github.repository == env.UPSTREAM_REPO && github.ref == env.UPSTREAM_BRANCH }}
-              run: docker push ${{ env.DOCKER_HUB_REPO }}:${{ env.TAG_NAME }}
-              
+              run: |
+                docker push ${{ env.DOCKER_HUB_REPO }}:${{ env.VERSION_TAG_NAME }}
+                echo '::info:: IMAGE WAS PUBLISHED ${{ env.DOCKER_HUB_REPO }}:${{ env.VERSION_TAG_NAME }}'
+ 
             - name: Docker hub logout
               if: ${{ github.repository == env.UPSTREAM_REPO && github.ref == env.UPSTREAM_BRANCH }}
               run: docker logout
