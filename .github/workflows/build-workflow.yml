@@ -8,9 +8,9 @@ on:
 
 env:
     DOCKER_HUB_REPO: "orangehrm/orangehrm-rabbitmq"
-    DEFAULT_TAG_NAME: "rabbitmq-3.9-redhat-8"
+    DEFAULT_TAG_NAME: "rabbitmq-3.9.8-redhat-8.4"
     UPSTREAM_REPO: "orangehrm/orangehrm-rabbitmq-images"
-    UPSTREAM_BRANCH: "refs/heads/rabbitmq-3.9-redhat-8"
+    UPSTREAM_BRANCH: "refs/heads/rabbitmq-3.9.8-redhat-8.4"
 
 jobs:
     Build:
@@ -41,7 +41,7 @@ jobs:
                 sleep 10s
                 php vendor/bin/codecept run unit
                 
-            - name: Get installed mariadb version
+            - name: Get installed rabbitmq version
               run: echo "VERSION_TAG_NAME=$(docker exec rabbitmq_container rabbitmqctl --version)" >> $GITHUB_ENV
   
             - name: New image with a version tag
