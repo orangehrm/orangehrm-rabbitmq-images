@@ -1,15 +1,10 @@
 version: '2.2'
 services:
     rabbitmq:
-        image: orangehrm/orangehrm-rabbitmq:rabbitmq-3.8.2-ubuntu-20.04
+        image: orangehrm/orangehrm-rabbitmq:rabbitmq-3.9-redhat-8
         container_name: rabbitmq_container
         volumes:
-        - ./test_config/certs:/cert_rabbitmq/
-        environment:
-            RABBITMQ_SSL_CERTFILE: /cert_rabbitmq/cert.pem
-            RABBITMQ_SSL_KEYFILE: /cert_rabbitmq/key.pem
-            RABBITMQ_SSL_CACERTFILE: /cert_rabbitmq/cacert.pem
-            RABBITMQ_SSL_FAIL_IF_NO_PEER_CERT: 'false'
-            RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS: '-rabbit ssl_listeners [{"::",5671}] -rabbit ssl_options [{certfile,"/cert_rabbitmq/cert.pem"},{keyfile,"/cert_rabbitmq/key.pem"},{cacertfile,"/cert_rabbitmq/cacert.pem"},{verify,verify_peer},{depth,3},{fail_if_no_peer_cert,false}] -rabbit tcp_listeners [{"::",5672}]'
+        - ./config/certs:/cert_rabbitmq/
+        - ./config/conf:/etc/rabbitmq
         restart: always
         
