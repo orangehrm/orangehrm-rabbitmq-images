@@ -6,5 +6,8 @@ services:
         volumes:
         - ./config/certs:/cert_rabbitmq/
         - ./config/conf:/etc/rabbitmq
+        - rabbitmq:/var/lib/rabbitmq
         restart: always
-        
+        hostname: rabbitmq-server
+volumes:
+    rabbitmq:
