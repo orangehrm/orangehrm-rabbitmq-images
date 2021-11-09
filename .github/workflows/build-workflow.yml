@@ -56,7 +56,9 @@ jobs:
               run: echo '::error:: New version is identified. Please create a new branch'
 
             - name: Deploy changes to the docker hub
-              if: ( ${{ github.repository == env.UPSTREAM_REPO && github.ref == env.UPSTREAM_BRANCH }} ) && ( ${{ env.DEFAULT_TAG_NAME }} == rabbitmq-${{ env.VERSION_TAG_NAME }}-redhat-8.4 )
+              if: |
+                ${{ github.repository == env.UPSTREAM_REPO && github.ref == env.UPSTREAM_BRANCH }} &&
+                ${{ env.DEFAULT_TAG_NAME }} == rabbitmq-${{ env.VERSION_TAG_NAME }}-redhat-8.4
               run: |
                 docker push ${{ env.DOCKER_HUB_REPO }}:rabbitmq-${{ env.VERSION_TAG_NAME }}-redhat-8.4
                 echo '::info:: IMAGE WAS PUBLISHED ${{ env.DOCKER_HUB_REPO }}:${{ env.VERSION_TAG_NAME }}'
