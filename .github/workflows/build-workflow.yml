@@ -2,15 +2,15 @@ name: Image Build Workflow
 
 on:
     push:
-      branches: [ rabbitmq-3.8.2-ubuntu-20.04 ]   
+      branches: [ rabbitmq-3.9-redhat-8 ]   
     pull_request:
-      branches: [ rabbitmq-3.8.2-ubuntu-20.04 ]
+      branches: [ rabbitmq-3.9-redhat-8 ]
 
 env:
     DOCKER_HUB_REPO: "orangehrm/orangehrm-rabbitmq"
-    TAG_NAME: "rabbitmq-3.8.2-ubuntu-20.04"
+    TAG_NAME: "rabbitmq-3.9-redhat-8"
     UPSTREAM_REPO: "orangehrm/orangehrm-rabbitmq-images"
-    UPSTREAM_BRANCH: "refs/heads/rabbitmq-3.8.2-ubuntu-20.04"
+    UPSTREAM_BRANCH: "refs/heads/rabbitmq-3.9-redhat-8"
 
 jobs:
     Build:
@@ -41,14 +41,14 @@ jobs:
                 sleep 10s
                 php vendor/bin/codecept run unit
               
-            # - name: Docker hub login
-            #   if: ${{ github.repository == env.UPSTREAM_REPO && github.ref == env.UPSTREAM_BRANCH }}
-            #   run: docker login -u=${{ secrets.DOCKER_HUB_USERNAME }} -p=${{ secrets.DOCKER_HUB_PASSWORD }}
+            - name: Docker hub login
+              if: ${{ github.repository == env.UPSTREAM_REPO && github.ref == env.UPSTREAM_BRANCH }}
+              run: docker login -u=${{ secrets.DOCKER_HUB_USERNAME }} -p=${{ secrets.DOCKER_HUB_PASSWORD }}
 
-            # - name: Deploy changes to the docker hub
-            #   if: ${{ github.repository == env.UPSTREAM_REPO && github.ref == env.UPSTREAM_BRANCH }}
-            #   run: docker push ${{ env.DOCKER_HUB_REPO }}:${{ env.TAG_NAME }}
+            - name: Deploy changes to the docker hub
+              if: ${{ github.repository == env.UPSTREAM_REPO && github.ref == env.UPSTREAM_BRANCH }}
+              run: docker push ${{ env.DOCKER_HUB_REPO }}:${{ env.TAG_NAME }}
               
-            # - name: Docker hub logout
-            #   if: ${{ github.repository == env.UPSTREAM_REPO && github.ref == env.UPSTREAM_BRANCH }}
-            #   run: docker logout
+            - name: Docker hub logout
+              if: ${{ github.repository == env.UPSTREAM_REPO && github.ref == env.UPSTREAM_BRANCH }}
+              run: docker logout
