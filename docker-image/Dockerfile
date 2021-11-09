@@ -26,10 +26,6 @@ RUN ln -sf /usr/lib/rabbitmq/lib/rabbitmq_server-3.9.8/plugins /plugins
 
 COPY rabbitmq_delayed_message_exchange-3.9.0.ez /plugins
 
-RUN set -eux; \
-    rabbitmq-plugins enable --offline rabbitmq_management; \
-    rabbitmq-plugins enable --offline rabbitmq_delayed_message_exchange
-
 # set home so that any `--user` knows where to put the erlang cookie
 ENV HOME $RABBITMQ_DATA_DIR
 
