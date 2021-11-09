@@ -52,7 +52,7 @@ jobs:
               run: docker login -u=${{ secrets.DOCKER_HUB_USERNAME }} -p=${{ secrets.DOCKER_HUB_PASSWORD }}            
 
             - name: Check installed Rabbitmq version
-              if: ${{ env.DEFAULT_TAG_NAME }} != ${{ env.VERSION_TAG_NAME }}-2
+              if: ${{ env.DEFAULT_TAG_NAME }} != ${{ env.VERSION_TAG_NAME }}
               run: echo 'ERROR - New RabbitMQ version is identified. Please create a new branch'
 
             - name: Deploy changes to the docker hub
