@@ -2,9 +2,9 @@ name: Image Build Workflow
 
 on:
     push:
-      branches: [ rabbitmq-3.9-redhat-8 ]   
+      branches: [ rabbitmq-3.9.8-redhat-8.4 ]   
     pull_request:
-      branches: [ rabbitmq-3.9-redhat-8 ]
+      branches: [ rabbitmq-3.9.8-redhat-8.4 ]
 
 env:
     DOCKER_HUB_REPO: "orangehrm/orangehrm-rabbitmq"
