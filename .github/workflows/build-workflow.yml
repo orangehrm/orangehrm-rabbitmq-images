@@ -2,15 +2,15 @@ name: Image Build Workflow
 
 on:
     push:
-      branches: [ rabbitmq-3.9.8-redhat-8.4 ]   
+      branches: [ rabbitmq-3.9.8-centos-7 ]   
     pull_request:
-      branches: [ rabbitmq-3.9.8-redhat-8.4 ]
+      branches: [ rabbitmq-3.9.8-centos-7 ]
 
 env:
     DOCKER_HUB_REPO: "orangehrm/orangehrm-rabbitmq"
-    DEFAULT_TAG_NAME: "rabbitmq-3.9.8-redhat-8.4"
+    DEFAULT_TAG_NAME: "rabbitmq-3.9.8-centos-7"
     UPSTREAM_REPO: "orangehrm/orangehrm-rabbitmq-images"
-    UPSTREAM_BRANCH: "refs/heads/rabbitmq-3.9.8-redhat-8.4"
+    UPSTREAM_BRANCH: "refs/heads/rabbitmq-3.9.8-centos-7"
 
 jobs:
     Build:
@@ -42,7 +42,7 @@ jobs:
                 php vendor/bin/codecept run unit
                 
             - name: Get installed rabbitmq version
-              run: echo "VERSION_TAG_NAME=rabbitmq-$(docker exec rabbitmq_container rabbitmqctl --version)-redhat-8.4" >> $GITHUB_ENV
+              run: echo "VERSION_TAG_NAME=rabbitmq-$(docker exec rabbitmq_container rabbitmqctl --version)-centos-7" >> $GITHUB_ENV
 
             - name: New image with a version tag
               run: docker tag ${{ env.DOCKER_HUB_REPO }}:${{ env.DEFAULT_TAG_NAME }} ${{ env.DOCKER_HUB_REPO }}:${{ env.VERSION_TAG_NAME }} 
