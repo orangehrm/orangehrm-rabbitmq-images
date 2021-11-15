@@ -1,12 +1,11 @@
-FROM registry.access.redhat.com/ubi8/ubi:latest
+FROM centos:7
 
 COPY config/rabbitmq.repo /etc/yum.repos.d/rabbitmq.repo
 
 RUN set -eux; \
 	yum update -y; \
-	yum -q makecache -y --disablerepo='*' --enablerepo='rabbitmq_erlang' --enablerepo='rabbitmq_server'; \
-    yum install socat logrotate -y; \
-    yum install --repo rabbitmq_erlang --repo rabbitmq_server erlang rabbitmq-server -y
+	yum install socat logrotate -y; \
+    yum install erlang rabbitmq-server-3.9.8 -y
     
 ENV RABBITMQ_DATA_DIR=/var/lib/rabbitmq
 
@@ -20,11 +19,6 @@ ENV HOME $RABBITMQ_DATA_DIR
 
 # Hint that the data (a.k.a. home dir) dir should be separate volume
 VOLUME $RABBITMQ_DATA_DIR
-
-# warning: the VM is running with native name encoding of latin1 which may cause Elixir to malfunction as it expects utf8. Please ensure your locale is set to UTF-8 (which can be verified by running "locale" in your shell)
-# Setting all environment variables that control language preferences, behaviour differs - https://www.gnu.org/software/gettext/manual/html_node/The-LANGUAGE-variable.html#The-LANGUAGE-variable
-# https://docs.docker.com/samples/library/ubuntu/#locales
-ENV LANG=C.UTF-8 LANGUAGE=C.UTF-8 LC_ALL=C.UTF-8
 
 COPY entrypoint.sh /usr/local/bin/
 

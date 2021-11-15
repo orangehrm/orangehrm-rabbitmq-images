@@ -9,9 +9,9 @@ class ContainerEnvironmentCest
     // tests
     public function vefiryOSVersionTest (UnitTester $I)
     {
-        $I->wantTo("Veify the container os version - RHEL 8.4");
+        $I->wantTo("Veify the container os version - CentOS 7");
         $I->runShellCommand("docker exec rabbitmq_container cat /etc/os-release | grep PRETTY_NAME | cut -d'=' -f 2"); 
-        $I->seeInShellOutput("Red Hat Enterprise Linux 8.4 (Ootpa)");
+        $I->seeInShellOutput("CentOS Linux 7");
     }
 
     public function vefiryInstalledRabbitMQVersionTest (UnitTester $I)
