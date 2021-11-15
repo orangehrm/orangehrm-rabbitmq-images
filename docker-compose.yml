@@ -1,7 +1,7 @@
 version: '2.2'
 services:
     rabbitmq:
-        image: orangehrm/orangehrm-rabbitmq:rabbitmq-3.9.8-redhat-8.4
+        image: orangehrm/orangehrm-rabbitmq:rabbitmq-3.9.8-centos-7
         container_name: rabbitmq_container
         volumes:
         - ./config/certs:/cert_rabbitmq/
